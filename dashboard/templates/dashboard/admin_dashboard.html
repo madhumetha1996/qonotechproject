@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Admin Dashboard</h1>
+
+  <form method="get" action="{% url 'admin_dashboard' %}">
+    <label for="category">Filter by Category:</label>
+    <select name="category" id="category">
+      <option value="">All Categories</option>
+      <option value="cloths">Cloths</option>
+      <option value="electronics">Electronics</option>
+      <!-- Add other category options as needed -->
+    </select>
+    <button type="submit">Apply Filter</button>
+  </form>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Product Name</th>
+        <!-- Add other table headers as needed -->
+      </tr>
+    </thead>
+    <tbody>
+      {% for product in dashboard.page_obj %}
+        <tr>
+          <td>{{ product.name }}</td>
+          <!-- Add other table cells as needed -->
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="pagination">
+    <span class="step-links">
+      {% if dashboard.page_obj.has_previous %}
+        <a href="?page=1">&laquo; first</a>
+        <a href="?page={{ dashboard.page_obj.previous_page_number }}">previous</a>
+      {% endif %}
+
+      <span class="current-page">{{ dashboard.page_obj.number }}</span>
+
+      {% if dashboard.page_obj.has_next %}
+        <a href="?page={{ dashboard.page_obj.next_page_number }}">next</a>
+        <a href="?page={{ dashboard.page_obj.paginator.num_pages }}">last &raquo;</a>
+      {% endif %}
+    </span>
+  </div>
+
+{% endblock %}
